@@ -61,12 +61,10 @@ npm install
 
 
 Run the backend:
-
 node server.js
 
-
 Backend will start at:
-👉 http://localhost:5000
+👉 http://localhost:5005
 
 SQLite DB file will be created automatically as students.db.
 
