@@ -52,19 +52,16 @@ student-management/
 
 
 1. Clone the repo
-git clone https://github.com/your-username/student-management.git
-cd student-management
+https://github.com/patilvishal1407/student_monitoring_app.git
+
 
 2. Backend Setup
 cd backend
 npm install
 
+Run the backend: node server.js
+Backend will start at: http://localhost:5005
 
-Run the backend:
-node server.js
-
-Backend will start at:
-👉 http://localhost:5005
 
 SQLite DB file will be created automatically as students.db.
 
@@ -72,30 +69,5 @@ SQLite DB file will be created automatically as students.db.
 cd frontend
 npm install
 
-
-Run the frontend:
-
-npm start
-
-
-Frontend will start at:
-👉 http://localhost:3000
-
-
-cd backend
-npm install
-node server.js
-Frontend
-
-bash
-Copy code
-cd frontend
-npm install
-npm start
-Electron
-
-bash
-Copy code
-cd electron
-npm install electron --save-dev
-npx electron .
+Run the frontend: npm start
+Frontend will start at: http://localhost:3000
