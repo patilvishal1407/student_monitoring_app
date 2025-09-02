@@ -12,5 +12,5 @@ app.use('/auth', authRoutes);
 app.use('/students', studentRoutes);
 app.use('/analytics', analyticsRoutes);
 
-const PORT = 3005;
+const PORT = 3001;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

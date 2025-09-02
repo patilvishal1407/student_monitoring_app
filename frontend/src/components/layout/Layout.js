@@ -1,6 +1,6 @@
 // src/components/Layout.js
 import React from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, NavLink } from "react-router-dom";
 import {
   AppBar,
   Box,
@@ -8,13 +8,13 @@ import {
   Drawer,
   IconButton,
   List,
-  ListItem,
+  ListItemButton,
   ListItemText,
   Toolbar,
   Typography,
   Button,
 } from "@mui/material";
-// import MenuIcon from "@mui/icons-material/Menu";
+import { FiMenu } from "react-icons/fi";
 import { AuthContext } from "../../context/AuthContext";
 
 const drawerWidth = 220;
@@ -27,20 +27,43 @@ export default function Layout() {
     setMobileOpen(!mobileOpen);
   };
 
+  const menuItems = [
+    { text: "Students", path: "/students" },
+    { text: "Analytics", path: "/analytics" },
+  ];
+
   const drawer = (
     <div>
-      <Toolbar>
-        <Typography variant="h6" noWrap>
+      <Toolbar sx={{ bgcolor: "primary.main" }}>
+        <Typography
+          variant="h6"
+          noWrap
+          sx={{ fontWeight: "bold", color: "white" }}
+        >
           Student App
         </Typography>
+
       </Toolbar>
       <List>
-        <ListItem button component={Link} to="/students">
-          <ListItemText primary="Students" />
-        </ListItem>
-        <ListItem button component={Link} to="/analytics">
-          <ListItemText primary="Analytics" />
-        </ListItem>
+        {menuItems.map((item) => (
+          <ListItemButton
+            key={item.text}
+            component={NavLink}
+            to={item.path}
+            sx={{
+              "&.active": {
+                backgroundColor: "primary.main",
+                color: "white",
+                "& .MuiListItemText-primary": {
+                  fontWeight: "bold",
+                  color: "white",
+                },
+              },
+            }}
+          >
+            <ListItemText primary={item.text} />
+          </ListItemButton>
+        ))}
       </List>
     </div>
   );
@@ -48,12 +71,14 @@ export default function Layout() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
+
       {/* Top App Bar */}
       <AppBar
         position="fixed"
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
+          backgroundColor: "primary.main",
         }}
       >
         <Toolbar>
@@ -63,12 +88,23 @@ export default function Layout() {
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: "none" } }}
           >
-            {/* <MenuIcon /> */}Menu Icon
+            <FiMenu size={22} />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            Dashboard
+          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
+            {/* Dashboard */}
           </Typography>
-          <Button color="inherit" onClick={logout}>
+          <Button
+            color="inherit"
+            variant="outlined"
+            onClick={logout}
+            sx={{
+              borderColor: "white",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "rgba(255,255,255,0.2)",
+              },
+            }}
+          >
             Logout
           </Button>
         </Toolbar>
@@ -87,7 +123,10 @@ export default function Layout() {
           ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
         >
           {drawer}
@@ -98,7 +137,10 @@ export default function Layout() {
           variant="permanent"
           sx={{
             display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
           open
         >
@@ -113,9 +155,11 @@ export default function Layout() {
           flexGrow: 1,
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
+          backgroundColor: "#f9fafc",
+          minHeight: "100vh",
         }}
       >
-        <Toolbar /> {/* spacing for AppBar */}
+        <Toolbar />
         <Outlet />
       </Box>
     </Box>

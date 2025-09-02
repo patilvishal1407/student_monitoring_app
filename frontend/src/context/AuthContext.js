@@ -1,16 +1,17 @@
+// context/AuthContext.js
 import { createContext, useState, useEffect } from "react";
-
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Load token from localStorage on first render
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
     if (savedToken) {
       setToken(savedToken);
     }
+    setLoading(false); // done loading
   }, []);
 
   const login = (newToken) => {
@@ -24,7 +25,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, login, logout }}>
+    <AuthContext.Provider value={{ token, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

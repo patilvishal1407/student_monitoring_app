@@ -8,8 +8,16 @@ import Analytics from "./components/Analytics";
 import Layout from "./components/layout/Layout";
 
 function ProtectedRoute({ children }) {
-  const { token } = React.useContext(AuthContext);
-  if (!token) return <Navigate to="/login" replace />;
+  const { token, loading } = React.useContext(AuthContext);
+
+  if (loading) {
+    return <div>Loading...</div>; // or a spinner
+  }
+
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
   return children;
 }
 

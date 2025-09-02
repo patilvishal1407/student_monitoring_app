@@ -13,7 +13,9 @@ import {
   TableRow,
   TextField,
   Typography,
-  Grid
+  Grid,
+  Stack,
+  Card, CardContent,
 } from "@mui/material";
 import api from "../utils/api";
 import { useNavigate } from "react-router-dom";
@@ -45,9 +47,13 @@ const StudentList = () => {
       fetchStudents();
     }
   };
+
+  const handleEdit = async (id) => {
+    navigate(`/students/${id}`);
+  };
+
   const handleAdd = async (id) => {
     navigate("/students/new");
-
   };
 
   useEffect(() => {
@@ -67,114 +73,119 @@ const StudentList = () => {
         Students List
       </Typography>
 
-      <Grid container spacing={2} sx={{ mb: 2 }}>
-        {/* Search by Name */}
-        <Grid item xs={3}>
-          <TextField
-            fullWidth
-            label="Search by name"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </Grid>
+      <Card sx={{ height: "100%", width: "100%" }}>
+        <CardContent sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+          <Grid container spacing={2} >
+            <Grid item xs={3} sx={{ width: "full" }}>
+              <TextField
+                fullWidth
+                size="small"
+                label="Search by name"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </Grid>
 
-        {/* Filter by Subject */}
-        <Grid item xs={3}>
-          <TextField
-            fullWidth
-            select
-            label="Filter by Subject"
-            value={filterSubject}
-            onChange={(e) => setFilterSubject(e.target.value)}
-          >
-            {subjects.map((subj) => (
-              <MenuItem key={subj} value={subj}>
-                {subj}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
+            <Grid item xs={3} sx={{ width: "full" }}>
+              <TextField
+                fullWidth
+                size="small"
+                select
+                label="Filter by Subject"
+                value={filterSubject}
+                onChange={(e) => setFilterSubject(e.target.value)}
+              >
+                {subjects.map((subj) => (
+                  <MenuItem key={subj} value={subj}>
+                    {subj}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
 
-        {/* Empty space */}
-        <Grid item xs={3}></Grid>
+            <Grid item xs={3} sx={{ width: "full" }}></Grid>
 
-        {/* Button aligned right */}
-        <Grid item xs={3} sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleAdd}
-            sx={{ px: 3, py: 1.5 }}
-          >
-            Add Student
-          </Button>
-        </Grid>
-      </Grid>
+            <Grid
+              item
+              xs={3}
+              sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleAdd}
+                sx={{ px: 3, py: 1.2 }}
+              >
+                Add Student
+              </Button>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
 
-
-      {/* <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-        <TextField
-          label="Search by name"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          sx={{ width: "50%" }}
-        />
-        <TextField
-          select
-          label="Filter by Subject"
-          value={filterSubject}
-          onChange={(e) => setFilterSubject(e.target.value)}
-          sx={{ width: "50%" }}
-        >
-          {subjects.map((subj) => (
-            <MenuItem key={subj} value={subj}>
-              {subj}
-            </MenuItem>
-          ))}
-        </TextField>
-      </Box> */}
       {loading ? (
         <CircularProgress />
       ) : (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Subject</TableCell>
-              <TableCell>Grade</TableCell>
-              <TableCell>Created At</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredStudents.map((s) => (
-              <TableRow key={s.id}>
-                <TableCell>{s.id}</TableCell>
-                <TableCell>{s.name}</TableCell>
-                <TableCell>{s.email}</TableCell>
-                <TableCell>{s.subject}</TableCell>
-                <TableCell>{s.grade}</TableCell>
-                <TableCell>
-                  {new Date(s.created_at).toLocaleDateString()}
-                </TableCell>
-                <TableCell>
-                  <Button
-                    color="error"
-                    variant="outlined"
-                    size="small"
-                    onClick={() => handleDelete(s.id)}
-                  >
-                    Delete
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <>
+
+          {filteredStudents && filteredStudents.length < 1 ? (
+            <Typography variant="h6" gutterBottom sx={{ mt:"20px" }}>
+              No Data Found
+            </Typography>
+          ) : (
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Subject</TableCell>
+                  <TableCell>Grade</TableCell>
+                  <TableCell>Created At</TableCell>
+                  <TableCell>Actions</TableCell>
+                </TableRow>
+              </TableHead >
+              <TableBody>
+                {filteredStudents.map((s) => (
+                  <TableRow key={s.id}>
+                    <TableCell>{s.id}</TableCell>
+                    <TableCell>{s.name}</TableCell>
+                    <TableCell>{s.email}</TableCell>
+                    <TableCell>{s.subject}</TableCell>
+                    <TableCell>{s.grade}</TableCell>
+                    <TableCell>
+                      {new Date(s.created_at).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>
+                      <Stack direction="row" spacing={1}>
+                        <Button
+                          color="primary"
+                          variant="outlined"
+                          size="small"
+                          onClick={() => handleEdit(s.id)}
+                        >
+                          Edit
+                        </Button>
+
+                        <Button
+                          color="error"
+                          variant="outlined"
+                          size="small"
+                          onClick={() => handleDelete(s.id)}
+                        >
+                          Delete
+                        </Button>
+                      </Stack>
+                    </TableCell>
+
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table >
+          )}
+        </>
       )}
-    </Paper>
+    </Paper >
   );
 };
 

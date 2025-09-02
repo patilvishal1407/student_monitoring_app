@@ -14,6 +14,8 @@ import {
 import api from "../utils/api";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { FaLock } from "react-icons/fa";
+
 const Login = ({ onLogin }) => {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(false);
@@ -53,8 +55,7 @@ const Login = ({ onLogin }) => {
         sx={{ mt: 8, p: 4, display: "flex", flexDirection: "column", alignItems: "center" }}
       >
         <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-          {/* <LockOutlinedIcon /> */} LockIcon dkkshkjsjakas
-          
+          <FaLock /> 
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign In
