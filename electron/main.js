@@ -5,11 +5,25 @@ function createWindow() {
   const win = new BrowserWindow({
     width: 1200,
     height: 800,
-    resizable: false,
-    webPreferences: { nodeIntegration: true }
+    webPreferences: {
+      nodeIntegration: false, // safer
+      contextIsolation: true, // recommended
+    },
   });
 
-  win.loadURL("http://localhost:3001");
+  // Load React dev server
+  win.loadURL("http://localhost:3000/login");
+
+  // Uncomment this to open DevTools automatically
+  // win.webContents.openDevTools();
 }
 
 app.whenReady().then(createWindow);
+
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") app.quit();
+});
+
+app.on("activate", () => {
+  if (BrowserWindow.getAllWindows().length === 0) createWindow();
+});

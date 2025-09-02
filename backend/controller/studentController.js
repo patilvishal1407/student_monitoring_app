@@ -1,8 +1,14 @@
 const db = require('../database');
 
 exports.getAll = (req, res) => {
-  console.log("heloooogettingstudents")
   db.all("SELECT * FROM students", [], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(rows);
+  });
+};
+exports.getById = (req, res) => {
+  const { id } = req.params;
+  db.all("SELECT * FROM students WHERE id=?", [id], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(rows);
   });

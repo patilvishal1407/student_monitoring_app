@@ -1,5 +1,5 @@
 // src/components/StudentForm.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -9,7 +9,7 @@ import {
   Paper,
 } from "@mui/material";
 import api from "../utils/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const subjects = ["Math", "Science", "English", "History"];
 
@@ -21,7 +21,7 @@ const StudentForm = ({ onSuccess }) => {
     grade: "",
   });
   const navigate = useNavigate();
-
+  const { id } = useParams();
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -68,7 +68,12 @@ const StudentForm = ({ onSuccess }) => {
 
     setLoading(true);
     try {
-      await api.post("/students", formData);
+
+      if (id) {
+        await api.put(`/students/${id}`, formData);
+      } else {
+        await api.post("/students", formData);
+      }
       setFormData({ name: "", email: "", subject: "", grade: "" });
       if (onSuccess) onSuccess();
       navigate("/students");
@@ -83,6 +88,27 @@ const StudentForm = ({ onSuccess }) => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await api.get(`/students/getbyid/${id}`);
+        console.log("datadata11", data[0].name);
+
+        setFormData({
+          name: data[0].name,
+          email: data[0].email,
+          subject: data[0].subject,
+          grade: data[0].grade,
+        });
+      } catch (err) {
+        console.error("Error fetching student:", err);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
 
   return (
     <Paper sx={{ p: 4, mb: 4 }}>
@@ -157,7 +183,7 @@ const StudentForm = ({ onSuccess }) => {
           disabled={loading}
           sx={{ mt: 3 }}
         >
-          {loading ? "Saving..." : "Save Student"}
+          {loading ? "Saving..." : (id ? "Update Student" : "Save Student")}
         </Button>
       </Box>
     </Paper>
