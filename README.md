@@ -62,7 +62,6 @@ npm install
 Run the backend: node server.js
 Backend will start at: http://localhost:5005
 
-
 SQLite DB file will be created automatically as students.db.
 
 3. Frontend Setup
@@ -71,3 +70,14 @@ npm install
 
 Run the frontend: npm start
 Frontend will start at: http://localhost:3000
+
+
+4. Frontend Setup
+cd electron
+npm start
+
+Electron Window Will open . 
+
+to log in :-
+userid = teacher
+password = password123
